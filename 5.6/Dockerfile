@@ -9,12 +9,16 @@ ENV RSYNC_DST_DIR /var/www/html/
 ENV RSYNC_DIR /rsync/
 ENV RSYNC_DELETE 'false'
 ENV RSYNC_MODE 'in'
+ENV UNISON_DAEMON 'false'
+ENV UNISON_DELAY 5
+ENV UNISON_DST_DIR /var/www/html/
+ENV UNISON_DIR /unison/
 
 RUN a2enmod rewrite
 
 RUN set -xe \
     && apt-get update \
-    && apt-get install -y libpng-dev libjpeg-dev libmcrypt-dev zip unzip nano rsync \
+    && apt-get install -y libpng-dev libjpeg-dev libmcrypt-dev zip unzip nano rsync unison \
     && docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr \
     && docker-php-ext-install mcrypt gd mysqli zip \
     && apt-get clean \
@@ -22,11 +26,14 @@ RUN set -xe \
 
 COPY docker-init.sh /bin/
 COPY rsync-daemon.sh /bin/
+COPY unison-daemon.sh /bin/
 
 RUN set -xe \
     && chmod +x /bin/docker-init.sh \
     && chmod +x /bin/rsync-daemon.sh \
-    && mkdir ${RSYNC_DIR}
+    && chmod +x /bin/unison-daemon.sh \
+    && mkdir ${RSYNC_DIR} \
+    && mkdir ${UNISON_DIR}
 
 EXPOSE 80
 

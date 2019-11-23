@@ -9,4 +9,8 @@ if [[ $RSYNC_DAEMON == 'true' ]]; then
   nohup rsync-daemon.sh &
 fi
 
+if [[ $UNISON_DAEMON == 'true' ]]; then
+  nohup unison-daemon.sh &
+fi
+
 apache2-foreground
