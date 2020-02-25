@@ -3,6 +3,7 @@ LABEL maintainer="TimRod"
 
 ENV APACHE_RUN_USER www-data
 ENV APACHE_RUN_USER_ID 33
+ENV WWW_PATH /var/www/html
 ENV RSYNC_DAEMON 'false'
 ENV RSYNC_DELAY 5
 ENV RSYNC_DST_DIR /var/www/html/
@@ -24,6 +25,14 @@ RUN set -xe \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
+RUN curl -fSL 'http://downloads3.ioncube.com/loader_downloads/ioncube_loaders_lin_x86-64.tar.gz' -o ioncube.tar.gz \
+    && mkdir -p ioncube \
+    && tar -xf ioncube.tar.gz -C ioncube --strip-components=1 \
+    && rm ioncube.tar.gz \
+    && mv ioncube/ioncube_loader_lin_5.6.so /usr/local/lib/php/extensions/ioncube_loader_lin_5.6.so \
+    && rm -r ioncube
+
+COPY php.ini /usr/local/etc/php/
 COPY docker-init.sh /bin/
 COPY rsync-daemon.sh /bin/
 COPY unison-daemon.sh /bin/
