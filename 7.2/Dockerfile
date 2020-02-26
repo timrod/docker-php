@@ -1,4 +1,4 @@
-FROM php:5.6-apache
+FROM php:7.2-apache
 LABEL maintainer="TimRod"
 
 ENV APACHE_RUN_USER www-data
@@ -21,7 +21,7 @@ RUN set -xe \
     && apt-get update \
     && apt-get install -y libpng-dev libjpeg-dev libmcrypt-dev zip unzip nano rsync unison \
     && docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr \
-    && docker-php-ext-install mcrypt gd mysqli zip \
+    && docker-php-ext-install gd mysqli zip \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -29,8 +29,8 @@ RUN curl -fSL 'http://downloads3.ioncube.com/loader_downloads/ioncube_loaders_li
     && mkdir -p ioncube \
     && tar -xf ioncube.tar.gz -C ioncube --strip-components=1 \
     && rm ioncube.tar.gz \
-    && mv ioncube/ioncube_loader_lin_5.6.so /usr/local/lib/php/extensions/ioncube_loader_lin_5.6.so \
-    && echo "zend_extension = /usr/local/lib/php/extensions/ioncube_loader_lin_5.6.so" >> /usr/local/etc/php/conf.d/ioncube.ini  \
+    && mv ioncube/ioncube_loader_lin_7.2.so /usr/local/lib/php/extensions/ioncube_loader_lin_7.2.so \
+    && echo "zend_extension = /usr/local/lib/php/extensions/ioncube_loader_lin_7.2.so" >> /usr/local/etc/php/conf.d/ioncube.ini  \
     && rm -r ioncube
 
 RUN echo "<?php phpinfo();" >> /var/www/html/index.php

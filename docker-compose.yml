@@ -1,0 +1,8 @@
+version: '3.5'
+
+services:
+
+  'apache':
+    image: timrod/php-apache:5.6
+    ports:
+      - 80:80
