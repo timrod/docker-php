@@ -19,8 +19,8 @@ RUN a2enmod rewrite
 
 RUN set -xe \
     && apt-get update \
-    && apt-get install -y libpng-dev libjpeg-dev libmcrypt-dev zip unzip nano rsync unison \
-    && docker-php-ext-configure gd --with-png-dir=/usr --with-jpeg-dir=/usr \
+    && apt-get install -y libpng-dev libjpeg-dev libfreetype6-dev libzip-dev libmcrypt-dev zip unzip nano rsync unison \
+    && docker-php-ext-configure gd --with-jpeg=/usr/include/ --with-freetype=/usr/include/ \
     && docker-php-ext-install gd mysqli zip \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
